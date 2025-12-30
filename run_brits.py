@@ -18,6 +18,7 @@ if __name__ == '__main__':
     # 3. Initialize BRITS
     # BRITS 是 RNN 架構，所以不需要 Attention 的參數 (如 n_heads, d_model 等)
     # 取而代之的是 rnn_hidden_size
+
     brits = BRITS(
         n_steps=WINDOW_SIZE,
         n_features=X.shape[2],
@@ -28,6 +29,10 @@ if __name__ == '__main__':
         device="cuda",
         saving_path="./models/brits"
     )
+
+    MODEL_PATH = "./models/brits/20251230_T162145/BRITS.pypots"
+    print(f"正在載入模型: {MODEL_PATH} ...")
+    brits.load(MODEL_PATH)
 
     # 4. Train
     print("開始訓練 BRITS...")
@@ -66,5 +71,6 @@ if __name__ == '__main__':
         X_imputed_inv,
         feature_names,
         sample_idx=0,
-        feature_idx=target_feature_idx
+        feature_idx=target_feature_idx,
+        model_name="brits"
     )

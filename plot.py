@@ -1,3 +1,5 @@
+import os.path
+
 import matplotlib.pyplot as plt
 
 def plot_imputation_result(original, missing, imputed, feature_names, sample_idx=0, feature_idx=1, model_name=""):
@@ -9,6 +11,9 @@ def plot_imputation_result(original, missing, imputed, feature_names, sample_idx
     sample_idx: 要畫第幾個樣本 (Window)
     feature_idx: 要畫第幾個特徵 (例如 1 代表 溫度)
     """
+
+    if not os.path.exists("./figures"):
+        os.makedirs("./figures")
 
     # 取出特定樣本與特徵的數據
     # 形狀都是 (TimeSteps,)

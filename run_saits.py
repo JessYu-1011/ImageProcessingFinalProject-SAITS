@@ -26,17 +26,43 @@ if __name__ == '__main__':
         d_k=64,
         d_v=64,
         dropout=0.1,
-        epochs=10,
-        batch_size=32,
+        epochs=20,
+        batch_size=256,
         patience=3,
         device="cuda",
-        saving_path="./models"
+        saving_path="./models/saits"
     )
 
     # 4. train
     print("開始訓練 SAITS...")
     saits.fit({"X": X_input})
-    imputation = saits.impute({"X": X_input})
+
+    # --- 修改開始：手動分批填補 ---
+    print("開始填補 (分批執行以避免 VRAM 爆炸)...")
+
+    # 設定推論時的 Batch Size (可以比訓練大，例如 256 或 512，視顯卡記憶體而定)
+    infer_batch_size = 512
+    n_samples = len(X_input)
+    imputation_list = []
+
+    # 使用迴圈分批處理
+    for i in range(0, n_samples, infer_batch_size):
+        # 1. 切出這批資料
+        batch_X = X_input[i: i + infer_batch_size]
+
+        # 2. 讓模型填補這批資料
+        # saits.impute 會回傳 numpy array，且通常已自動轉回 CPU
+        batch_res = saits.impute({"X": batch_X})
+
+        # 3. 存入列表
+        imputation_list.append(batch_res)
+
+    # 4. 將所有批次結果合併
+    imputation = np.concatenate(imputation_list, axis=0)
+    print(f"填補完成，總形狀: {imputation.shape}")
+    # --- 修改結束 ---
+
+
     saits.save("./models/saits.pypots")
     # 5. Result
     sample_idx = 0
@@ -66,6 +92,7 @@ if __name__ == '__main__':
         X_imputed_inv,
         feature_names,
         sample_idx=0,
-        feature_idx=target_feature_idx
+        feature_idx=target_feature_idx,
+        model_name="saits"
     )
 

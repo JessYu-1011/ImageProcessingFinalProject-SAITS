@@ -28,7 +28,8 @@ if __name__ == '__main__':
         dropout=0.1,
         epochs=10,
         batch_size=32,
-        patience=3
+        patience=3,
+        device="cuda"
     )
 
     # 4. train

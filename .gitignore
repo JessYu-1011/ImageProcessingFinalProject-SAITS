@@ -1,0 +1,7 @@
+**/models/
+
+**/.idea/
+
+**/final_project.egg-info
+
+**/__pycache__/

@@ -29,14 +29,15 @@ if __name__ == '__main__':
         epochs=10,
         batch_size=32,
         patience=3,
-        device="cuda"
+        device="cuda",
+        saving_path="./models"
     )
 
     # 4. train
     print("開始訓練 SAITS...")
     saits.fit({"X": X_input})
     imputation = saits.impute({"X": X_input})
-
+    saits.save("./models/saits.pypots")
     # 5. Result
     sample_idx = 0
     restored_sample = scaler.inverse_transform(imputation[sample_idx])
@@ -67,3 +68,4 @@ if __name__ == '__main__':
         sample_idx=0,
         feature_idx=target_feature_idx
     )
+

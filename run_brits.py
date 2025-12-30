@@ -30,10 +30,6 @@ if __name__ == '__main__':
         saving_path="./models/brits"
     )
 
-    MODEL_PATH = "./models/brits/20251230_T162145/BRITS.pypots"
-    print(f"正在載入模型: {MODEL_PATH} ...")
-    brits.load(MODEL_PATH)
-
     # 4. Train
     print("開始訓練 BRITS...")
     brits.fit({"X": X_input})

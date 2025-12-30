@@ -27,7 +27,7 @@ if __name__ == '__main__':
         d_v=64,
         dropout=0.1,
         epochs=20,
-        batch_size=256,
+        batch_size=32,
         patience=3,
         device="cuda",
         saving_path="./models/saits"
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     print("開始填補 (分批執行以避免 VRAM 爆炸)...")
 
     # 設定推論時的 Batch Size (可以比訓練大，例如 256 或 512，視顯卡記憶體而定)
-    infer_batch_size = 512
+    infer_batch_size = 32
     n_samples = len(X_input)
     imputation_list = []
 

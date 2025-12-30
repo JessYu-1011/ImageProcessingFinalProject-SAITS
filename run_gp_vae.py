@@ -26,7 +26,7 @@ if __name__ == '__main__':
         kernel="cauchy",  # 高斯過程的核函數，可選 "cauchy", "diffusion", "rbf", "matern"
         beta=1.0,  # KL Divergence 的權重 (Beta-VAE)
         epochs=20,
-        batch_size=256,
+        batch_size=32,
         patience=3,
         device="cuda",
         saving_path="./models/gpvae"
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     # --- 手動分批填補 (GPVAE 計算量也很大，保留這個邏輯很好) ---
     print("開始填補 (分批執行以避免 VRAM 爆炸)...")
 
-    infer_batch_size = 512
+    infer_batch_size = 32
     n_samples = len(X_input)
     imputation_list = []
 

@@ -133,13 +133,17 @@ def calculate_metrics(original, imputed, mask):
 # ==========================================
 if __name__ == '__main__':
     # 設定參數
-    TARGET_MODEL_NAME = "csdi"
-    MODEL_WEIGHT_PATH = "./models/csdi/20251231_T012023/CSDI.pypots"
+    TARGET_MODEL_NAME = "saits"
+    MODEL_WEIGHT_PATH = "./models/saits/20251231_T112943/SAITS.pypots"
 
     DATA_PATH = "./dataset/weather.csv"
     WINDOW_SIZE = 144
-    CHUNK_SIZE = 1024
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    CHUNK_SIZE = 256
+    DEVICE = "cpu"
+    if torch.cuda.is_available():
+        DEVICE = "cuda"
+    elif torch.mps.is_available():
+        DEVICE = "mps"
 
     # === 修改點 1: 設定要測試的缺失率列表 ===
     MISSING_RATES = [0.3, 0.5, 0.7]

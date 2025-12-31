@@ -26,7 +26,7 @@ if __name__ == '__main__':
         kernel="cauchy",  # 高斯過程的核函數，可選 "cauchy", "diffusion", "rbf", "matern"
         beta=1.0,  # KL Divergence 的權重 (Beta-VAE)
         epochs=20,
-        batch_size=32,
+        batch_size=128,
         patience=3,
         device="cuda",
         saving_path="./models/gpvae"
@@ -36,7 +36,6 @@ if __name__ == '__main__':
     print("開始訓練 GPVAE...")
     gpvae.fit({"X": X_input})
 
-    # --- 手動分批填補 (GPVAE 計算量也很大，保留這個邏輯很好) ---
     print("開始填補 (分批執行以避免 VRAM 爆炸)...")
 
     infer_batch_size = 32
@@ -52,7 +51,12 @@ if __name__ == '__main__':
 
     imputation = np.concatenate(imputation_list, axis=0)
     print(f"填補完成，總形狀: {imputation.shape}")
-    # --- 修改結束 ---
+    # 如果是 4D (有取樣維度)，我們把它壓平或取平均
+    if imputation.ndim == 4:
+        # 這裡我們直接取第 0 次取樣的結果 (或是用 .mean(axis=1) 取平均也可以)
+        imputation = imputation[:, 0, :, :]
+
+    print(f"修正後的形狀: {imputation.shape}")  # 應該變成 (52553, 144, 21)
 
     # 儲存模型 (注意副檔名習慣)
     # 雖然 PyPOTS 會在 saving_path 自動存，但手動存一個也不錯

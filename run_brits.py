@@ -23,8 +23,8 @@ if __name__ == '__main__':
         n_steps=WINDOW_SIZE,
         n_features=X.shape[2],
         rnn_hidden_size=64,  # 設定 RNN 隱藏層大小
-        epochs=10,
-        batch_size=32,
+        epochs=20,
+        batch_size=256,
         patience=3,
         device="cuda",
         saving_path="./models/brits"

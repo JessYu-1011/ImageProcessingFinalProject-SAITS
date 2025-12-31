@@ -27,7 +27,7 @@ if __name__ == '__main__':
         kernel="cauchy",  # 高斯過程的核函數，可選 "cauchy", "diffusion", "rbf", "matern"
         beta=1.0,  # KL Divergence 的權重 (Beta-VAE)
         epochs=20,
-        batch_size=32,
+        batch_size=256,
         patience=3,
         device="cuda",
         saving_path="./models/gpvae"

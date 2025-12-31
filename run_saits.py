@@ -27,7 +27,7 @@ if __name__ == '__main__':
         d_v=64,
         dropout=0.1,
         epochs=20,
-        batch_size=32,
+        batch_size=256,
         patience=3,
         device="cuda",
         saving_path="./models/saits"

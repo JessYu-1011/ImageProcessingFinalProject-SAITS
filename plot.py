@@ -4,37 +4,37 @@ import matplotlib.pyplot as plt
 
 def plot_imputation_result(original, missing, imputed, feature_names, sample_idx=0, feature_idx=1, model_name=""):
     """
-    original: 完整的原始資料 (反標準化後)
-    missing:  帶有 NaN 的輸入資料 (反標準化後)
-    imputed:  模型填補後的結果 (反標準化後)
-    feature_names: 特徵名稱列表
-    sample_idx: 要畫第幾個樣本 (Window)
-    feature_idx: 要畫第幾個特徵 (例如 1 代表 溫度)
+    original: Complete original data (inverse normalized)
+    missing:  Input data with NaN (inverse normalized)
+    imputed:  Model imputation results (inverse normalized)
+    feature_names: List of feature names
+    sample_idx: Which sample (window) to plot
+    feature_idx: Which feature to plot (e.g., 1 represents Temperature)
     """
 
     if not os.path.exists("./figures"):
         os.makedirs("./figures")
 
-    # 取出特定樣本與特徵的數據
-    # 形狀都是 (TimeSteps,)
+    # Extract data for specific sample and feature
+    # All shapes are (TimeSteps,)
     org_data = original[sample_idx, :, feature_idx]
     imp_data = imputed[sample_idx, :, feature_idx]
 
-    # 建立一個畫布
+    # Create a canvas
     plt.figure(figsize=(12, 6))
 
-    # 1. 畫出模型填補的結果 (紅色實線)
-    # 包含了「原本有的」和「填補出來的」
+    # 1. Plot the model imputation results (red solid line)
+    # Includes "original" and "imputed" values
     plt.plot(imp_data, color='red', label='Imputed (Model Output)', linestyle='-', alpha=0.7)
 
-    # 2. 畫出原始真實數據 (綠色虛線)
-    # 這讓我們知道「正確答案」是什麼
+    # 2. Plot the original ground truth data (green dashed line)
+    # This shows us what the "correct answer" is
     plt.plot(org_data, color='green', label='Ground Truth (Original)', linestyle='--', alpha=0.6)
 
-    # 3. 畫出觀測到的數據 (藍色點/線)
-    # 這些是模型「看得到」的數據。斷掉的地方就是 NaN。
-    # 注意：反標準化時 NaN 可能會被填成數字，所以這裡我們重新用 mask 過濾一下確保不畫出來
-    # 但為了簡單，如果你傳入的 missing 裡面有 NaN，matplotlib 會自動斷開不畫，這正是我們要的
+    # 3. Plot the observed data (blue points/line)
+    # This is the data the model "can see". Gaps are where NaN values exist.
+    # Note: When inverse normalizing, NaN might be filled with numbers, so we re-filter with mask to ensure they're not plotted
+    # But for simplicity, if your missing has NaN, matplotlib will automatically break the line, which is exactly what we want
     plt.plot(missing[sample_idx, :, feature_idx], color='blue', label='Observed (Input)', linewidth=2)
 
     plt.title(f"Imputation Result: Sample {sample_idx}, Feature '{feature_names[feature_idx]}'")

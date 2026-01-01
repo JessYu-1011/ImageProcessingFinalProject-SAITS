@@ -1,5 +1,6 @@
 import numpy as np
-from pypots.imputation import BRITS  # 1. 修改這裡：改為匯入 BRITS
+# 1. Modify here: change to import BRITS
+from pypots.imputation import BRITS
 from data_loader import load_and_process_data
 from utils import testModel
 
@@ -17,13 +18,13 @@ if __name__ == '__main__':
     X_input[mask] = np.nan
 
     # 3. Initialize BRITS
-    # BRITS 是 RNN 架構，所以不需要 Attention 的參數 (如 n_heads, d_model 等)
-    # 取而代之的是 rnn_hidden_size
+    # BRITS is an RNN architecture, so it doesn't need Attention parameters (like n_heads, d_model, etc.)
+    # Instead, it uses rnn_hidden_size
 
     brits = BRITS(
         n_steps=WINDOW_SIZE,
         n_features=X.shape[2],
-        rnn_hidden_size=64,  # 設定 RNN 隱藏層大小
+        rnn_hidden_size=64,  # Set RNN hidden layer size
         epochs=20,
         batch_size=256,
         patience=3,
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     )
 
     # 4. Train
-    print("開始訓練 BRITS...")
+    print("Starting BRITS training...")
     brits.fit({"X": X_input})
 
 

@@ -35,7 +35,7 @@ if __name__ == '__main__':
     )
 
     # 4. train
-    print("開始訓練 SAITS...")
+    print("Starting SAITS training...")
     saits.fit({"X": X_input})
 
     # 5. Test

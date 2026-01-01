@@ -12,7 +12,7 @@ for filename in os.listdir(folder_path):
 
 df = None
 for file in files:
-    temp_df = pd.read_csv(file).head(1)
+    temp_df = pd.read_csv(file)
     if "saits" in file.lower():
         temp_df['model'] = 'SAITS'
     elif "brits" in file.lower():
